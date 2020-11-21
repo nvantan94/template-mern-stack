@@ -1,6 +1,10 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+
+import User from './model/User.js'
 
 dotenv.config();
 
@@ -15,6 +19,21 @@ mongoose.connect(connection_url, {
   useUnifiedTopology: true
 }).then(() => console.log("DB Connected"))
 .catch(err => console.error(err));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+app.post('/api/users/register', (req, res) => {
+  const user = new User(req.body);
+
+  user.save((err, userData) => {
+    if (err) 
+      res.status(500).json({ success: false, err})
+    else
+      res.status(200).send(userData);
+  })
+})
 
 app.get('/', (req, res) => {
   res.send('hello world');
