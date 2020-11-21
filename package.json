@@ -1,0 +1,23 @@
+{
+  "name": "template-mern-stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nvantan94/template-mern-stack.git"
+  },
+  "author": "nvantan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nvantan94/template-mern-stack/issues"
+  },
+  "homepage": "https://github.com/nvantan94/template-mern-stack#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
