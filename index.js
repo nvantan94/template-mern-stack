@@ -4,7 +4,9 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 
-import User from './model/User.js'
+import User from './models/User.js'
+
+import { auth } from  './middleware/auth.js'
 
 dotenv.config();
 
@@ -23,6 +25,17 @@ mongoose.connect(connection_url, {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.get("/api/user/auth", auth, (req, res) => {
+  res.status(200).json({
+    _id: req._id,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastName: req.user.lastName,
+    role: req.user.role
+  })
+})
 
 app.get('/', (req, res) => {
   res.send('hello world');
@@ -58,7 +71,13 @@ app.post('/api/user/login', (req, res) => {
     
 
     user.generateToken((err, user) => {
-
+      if (err)
+        return res.status(400).send(err);
+      res.cookie("x_auth", user.token)
+        .status(200)
+        .json({
+          loginSuccess: true
+        })
     })
   })
 })
